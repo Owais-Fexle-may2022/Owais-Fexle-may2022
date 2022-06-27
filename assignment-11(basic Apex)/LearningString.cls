@@ -13,14 +13,6 @@ public with sharing class LearningString {
         String s22 = s.abbreviate(9,6);
         System.assertEquals('...Max...', s22);
         System.assertEquals(9, s2.length());
-        // Returns the current String with the first letter changed to title case.
-        // String s3= 'hello maximillian';
-        // String s3 = s3.capitalize();
-        // System.assertEquals('Hello maximillian', s3);
-        // Returns a version of the current String of the specified size padded with spaces on the left and righ
-        // String s4 = 'hello';
-        // String s4 = s4.center(9);
-        // System.assertEquals('  hello  ',s4);
         // Returns a version of the current String of the specified size padded with the specified String on the left and right
         String s5 = 'hello';
         String s55 = s5.center(9, '-');
@@ -45,19 +37,11 @@ public with sharing class LearningString {
                     + ': ' + str.codePointCount(0,1));
         System.debug('Count of code points for ' + str.substring(6,8) 
                     + ': ' + str.codePointCount(6,8));
-        // Output:
-        // Count of code points for Ω: 1
-        // Count of code points for 𝔊: 1
-        // Compares two strings lexicographically, based on the Unicode value of each character in the Strings.
         String myString1 = 'abcde';
         String myString2 = 'abcd';
         Integer result = 
         myString1.compareTo(myString2);
         System.assertEquals(result, 1);
-        // eturns true if and only if the String that called
-        //  the method contains the specified sequence of characters in substring.
-        // String myString1 = 'abcde';
-        // String myString2 = 'abcd';
         Boolean result1 = 
         myString1.contains(myString2);
         System.assertEquals(result1, true);
@@ -126,12 +110,6 @@ public with sharing class LearningString {
         System.debug('indexOfChar(937)=' + str.indexOfChar(937));
         System.debug('indexOfChar(937,1)=' + str.indexOfChar(937,1));
         System.debug('indexOfChar(937,10)=' + str.indexOfChar(937,10));
-
-        // Output:
-        // indexOfChar(937)=0
-        // indexOfChar(937,1)=6, (corresponds to the escaped form \\u03A9)
-        // indexOfChar(937,10)=12
-        // return all string in lower case 
         String allLower = 'abcde';
         System.assert(allLower.isAllLowerCase());
         // return all string in upper case 
