@@ -20,37 +20,28 @@ public with sharing class Country {
         allMap.put('SA',mapCountryState);
         allMap.put('DUS',mapCountryState);
         allMap.put('EUPS',mapCountryState);
-        // public void findDistrictCityWithSpecifiedS(){
-        List<String> CountryNameList=new List<String>();
-        List<String> StateNameList=new List<String>();
-        List<String> CityNameList=new List<String>();
+            Map<String,Map<String,List<String>>>mapCountryStateCity=new Map<String,Map<String,List<String>>>();
+            Map<String,List<String>> mapState;
+            List<String> ListCity;
         for(String Code :allMap.KeySet()){
-            if(Code.containsIgnoreCase('S')){
                 for(String CountryState :allMap.get(Code).KeySet()){
                     if(CountryState.containsIgnoreCase('s')){
-                        CountryNameList.add('its a new Country'+CountryState);
+                        mapState=new map<String,List<String>>();
                         for(String StateName : allMap.get(Code).get(CountryState).KeySet()){
                             if(StateName.containsIgnoreCase('s')){
-                                StateNameList.add('State of' + CountryState);
-                                StateNameList.add(StateName);
+                                ListCity=new List<String>();
                                 for(String CityName :allMap.get(Code).get(CountryState).get(StateName)){
                                     if(CityName.length()>=5 && CityName.containsIgnoreCase('s')){
-                                        CityNameList.add('City of' + StateName);
-                                        CityNameList.add(CityName);
-                                    }                                       
+                                       ListCity.add(CityName);   
+                                    }   
                                 }
+                                mapState.put(StateName,ListCity);
                             }
-                        }
+                        }    
+                        mapCountryStateCity.put(CountryState,mapState);
                     }
                 }
             }
-        }
-        system.debug(CountryNameList);
-        system.debug(StateNameList);
-        system.debug(CityNameList);
-        // }    
-        // system.debug('all map :' +allMap);
-        // system.debug(' all map India :'+ allMap.get('IND')); 
-        // system.debug(' Country State District :'+ allMap.get('AMA').get('America').get('Alabma')); 
+        system.debug(mapCountryStateCity); 
     }
 }
