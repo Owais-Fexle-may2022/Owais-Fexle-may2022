@@ -119,7 +119,7 @@ public with sharing class CountryStateDistrictDataManipulation{
  * Parameters   : String 
 */     
     public void updateCountryJson(String countryName){ 
-        Country__c con =[SELECT Name,
+        Country__c con =[SELECT Id,Name,
         Country_JSON_Data__c
         FROM Country__c
         WHERE Name =:countryName];// fetching the record from data base
@@ -143,8 +143,8 @@ public with sharing class CountryStateDistrictDataManipulation{
         Country con = new Country();
         con.countryName = countryName;
         con.countryCode=conData.Country_code__c;
-        con.totalState=(Integer)conData.Total_Number_Of_States__c;
-        con.totalDistrict=(Integer)conData.Total_Number_Of_Districts__c;
+        con.countryTotalState=(Integer)conData.Total_Number_Of_States__c;
+        con.countryTotalDistrict=(Integer)conData.Total_Number_Of_Districts__c;
         // Creating list of state
         List<States> listStates = new List<States>();
         // Iterating global map to store data in country instance
@@ -171,9 +171,10 @@ public with sharing class CountryStateDistrictDataManipulation{
     public class country{
         public string countryName{get;set;}
         public String countryCode{get;set;}
-        public Integer totalState{get;set;}
-        public Integer totalDistrict{get;set;}
+        public Integer countryTotalState{get;set;}
+        public Integer countryTotalDistrict{get;set;}
         public List<States> states{get;set;}
+        
     }
 /*--------------------------------------------------------------------------------------------------------------------------
  * Created Date : 15/7/2022
