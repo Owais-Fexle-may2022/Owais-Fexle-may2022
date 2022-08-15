@@ -190,6 +190,14 @@ public static void InsertAndUpdate(List<Opportunity> oppList){
     }
 
 }
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Created Date         :       05/08/2022
+    * Author               :       Mohd Owais
+    * Description          :       Send Mail when Opportunity is updated or created
+    * Returns              :       Void
+    * Parameters           :       List<SObject>, Set<Opportunity>
+    ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
 public static void sendMail(List<sObject> autoRecordList, List<Opportunity> opportunityList) {
     Map<String, List<sObject>> mapOfAutoRecords = new Map<String, List<sObject>>();
     // saving List to Database save result function for partially insertion or updation.
