@@ -180,26 +180,16 @@ public static void InsertAndUpdate(List<Opportunity> oppList){
     // adding Both List to a Single List 
     updateInsertRecord.addAll(newAutomobileRecords);
     updateInsertRecord.addAll(existingAutomobileRecords);
-    // system.debug('New automoblies List:' + NewAutomobileRecords);
-    // system.debug('Existing automoblies List:' + ExistingAutomobileRecords);
     if(!updateInsertRecord.isEmpty()){
         // sending lists to sendMail method as parameter
         sendMail(updateInsertRecord,oppList);
-        // system.debug('update insert list:' + updateInsertRecord);
-
     }
 
 }
-──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Created Date         :       05/08/2022
-    * Author               :       Mohd Owais
-    * Description          :       Send Mail when Opportunity is updated or created
-    * Returns              :       Void
-    * Parameters           :       List<SObject>, Set<Opportunity>
-    ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
 public static void sendMail(List<sObject> autoRecordList, List<Opportunity> opportunityList) {
     Map<String, List<sObject>> mapOfAutoRecords = new Map<String, List<sObject>>();
+    String insertMessage='Record Created ';
+    String errorMessage='Record Not created';
     // saving List to Database save result function for partially insertion or updation.
     Database.UpsertResult[] results=Database.upsert(AutoRecordList, false);  
     String htmlBody = '';
@@ -241,47 +231,37 @@ public static void sendMail(List<sObject> autoRecordList, List<Opportunity> oppo
                 if (sensorName.contains('00:11:CE:00')) {
                     sensorType = 'Auto Sensor';
                     if (result.isSuccess()) {
-                        message = 'Record Successfully Created, Opprotunity Name is: ' + result.getId();
+                        message = SensorType + insertMessage +  (String)recordName.get('Account__c');
                     }
-                    else {
-                        for (Database.Error error : result.getErrors()) {
-                            message1 = error.getStatusCode() + ': ' + error.getMessage() + 
-                            ' Fields that affected the error: ' + error.getFields();
-                        }
+                    else {    
+                        message1 = errorMessage;
                     }
                 }
                 else if (sensorName.contains('00:11:CE:D')) {
                     sensorType = 'Auto Presence';
                     if (result.isSuccess()) {
-                        message = 'Record Successfully Created, Opprotunity Name is: ' + result.getId();
+                        message = SensorType + insertMessage +  (String)recordName.get('Account__c');
                     }
                     else {
-                        for (Database.Error error : result.getErrors()) {
-                            message1 = error.getStatusCode() + ': ' + error.getMessage() + 
-                            ' Fields that affected the error: ' + error.getFields();
-                        }
+                        message1 = errorMessage;
                     }
                 }
                 else if (sensorName.contains('00:11:CE:E')) {
                     sensorType = 'Auto TDU ';
                     if (result.isSuccess()) {
-                        message = 'Record Successfully Created, Opprotunity Name is: ' + result.getId();
+                        message = SensorType + insertMessage +  (String)recordName.get('Account__c');
                     }
                     else {
-                        for (Database.Error error : result.getErrors()) {
-                            message1 = error.getStatusCode() + ': ' + error.getMessage() + ' Fields that affected the error: ' + error.getFields();
-                        }
+                        message1 = errorMessage;
                     }
                 }
                 else if (sensorName.substring(1,3).isNumeric()) {
                     sensorType = 'Auto Tag';
                     if (result.isSuccess()) {
-                        message = 'Record Successfully Created, Opprotunity Name is: ' + result.getId();
+                        message = SensorType + insertMessage +  (String)recordName.get('Account__c');
                     }
                     else {
-                        for (Database.Error error : result.getErrors()) {
-                            message1 = error.getStatusCode() + ': ' + error.getMessage() + ' Fields that affected the error: ' + error.getFields();
-                        }
+                        message1 = errorMessage;
                     }
                 }
             }
