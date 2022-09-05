@@ -1,10 +1,8 @@
 public with sharing class State_Helper {
     static  Map<String,Map<String,List<String>>> globalMapWithCountryState= new Map<String,Map<String,List<String>>>();
-    static map<Id,Country__c> mapCountryState=new map<Id,Country__c>();
-    static List<Id> countryList = new List<Id>();
      /*
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * @Description      This method is used when an State is inserted it updates total no of state on country object.
+    * @Description      This method is used when an State is inserted deleted or updated it updates total no of state on country object.
     * @author           Mohd Owais  <mohd.owais@fexle.com>
     * @Return           void
     * @Parameter        List of district
@@ -12,93 +10,36 @@ public with sharing class State_Helper {
     * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
     
-    public static void StateIsInsert(List<State__c> stateList) {
-        for (State__c st : stateList) {
-            countryList.add(st.Country_Name__c);
-        }
-        AggregateResult[] aggregateOnState = [SELECT  Country_Name__c,COUNT(Id)NumofState 
-         FROM State__c GROUP BY Country_Name__c];
-        for (State__c st : stateList) {
-            for(aggregateResult agr:aggregateOnState){
-                if (st.Country_Name__c == agr.get('Country_Name__c')) {
-                    mapCountryState.put(String.valueof(agr.get('Country_Name__c')),
-                    new Country__c(Id=String.valueof(agr.get('Country_Name__c')),Total_Number_Of_States__c=Integer.valueof(agr.get('NumofState'))));                    
-                }
+    public static void insertUpdateDeleteState(List<State__c> newState,Map<Id,State__c> oldStateMap) {
+        // initilizing map to store state parent and id.
+        Map<Id,Country__c> mapOfCountryToBeUpdate=new Map<Id,Country__c>();
+         // iterating state list.And putting values in map.
+        for(State__c std:newState!=null ? newState:oldStateMap.Values()){
+            if(std.Country_Name__c!=null){
+                mapOfCountryToBeUpdate.put(std.Country_Name__c,new Country__c(Id=std.Country_Name__c,Total_Number_Of_States__c=0));
+            }
+            if(oldStateMap !=null && std.Country_Name__c != oldStateMap.get(std.Id).Country_Name__c){
+                mapOfCountryToBeUpdate.put(oldStateMap.get(std.Id).Country_Name__c,new Country__c(Id=oldStateMap.get(std.Id).Country_Name__c,
+                                                                                                                Total_Number_Of_States__c=0));
             }
         }
-        if(!mapCountryState.isEmpty()){
-            // updating country record
-            update mapCountryState.Values();
+        if(!mapOfCountryToBeUpdate.isEmpty()){
+            // iterating aggregate query and putting new value in total no of state field.
+            for(AggregateResult agr:[SELECT COUNT(Id)NumofState,Country_Name__c FROM State__c WHERE Country_Name__c 
+                                        IN:mapOfCountryToBeUpdate.keySet() GROUP BY Country_Name__c]){
+                mapOfCountryToBeUpdate.get((Id)agr.get('Country_Name__c')).Total_Number_Of_States__c=(Integer)agr.get('NumofState');
+                                        }
+        }
+        // updating map values
+        update mapOfCountryToBeUpdate.Values();
+
+        List<Id> countryList = new List<Id>();
+        for(State__c s: newState!=null ? newState : oldStateMap.Values()) {
+            countryList.add(s.Country_Name__c);           
+        }
             CountryJosnGenerator(countryList);
-        }
     }
-   /*
-    ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * @Description      This method is used when an State is updated it updates total no of State country object.
-    * @author           Mohd Owais  <mohd.owais@fexle.com>
-    * @Return           void
-    * @Parameter        List of district,List of old District.
-    * @created          2022-08-13
-    * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */  
-    public static void StateUpdate(List<State__c> stateListNew, List<State__c> stateListOld) {
-        for (State__c st : stateListNew) {
-            countryList.add(st.Country_Name__c);
-        }    
-        if (!stateListOld.isEmpty()) {
-            for (State__c st : stateListOld) {
-                countryList.add(st.Country_Name__c);
-            }
-        }
-        // get aggegrate result on state 
-        // Total state  on country
-        AggregateResult[] aggregateOnState = [SELECT  Country_Name__c,COUNT(Id)NumofState 
-         FROM State__c GROUP BY Country_Name__c];   
-        for (State__c st : stateListNew) {
-            for(aggregateResult agr:aggregateOnState){
-                if (st.Country_Name__c == agr.get('Country_Name__c')) {
-                    mapCountryState.put(String.valueof(agr.get('Country_Name__c')),
-                    new Country__c(Id=String.valueof(agr.get('Country_Name__c')),Total_Number_Of_States__c=Integer.valueof(agr.get('NumofState'))));                    
-                }
-            }
-        }
-        if(!mapCountryState.isEmpty()){
-            // updating country record
-            update mapCountryState.Values();
-            CountryJosnGenerator(countryList);
-        }
-    }
-         /*
-    ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * @Description      This method is used when an State is Deleted it updates total no of State country object.
-    * @author           Mohd Owais  <mohd.owais@fexle.com>
-    * @Return           void
-    * @Parameter        List of old district.
-    * @created          2022-08-15
-    * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    public static void StateDelete(List<State__c> stateList) {
-        for (State__c st : stateList) {
-            countryList.add(st.Country_Name__c);
-        }
-        // get aggegrate result on state 
-        // Total state and district on country
-        AggregateResult[] aggregateOnState = [SELECT  Country_Name__c,COUNT(Id)NumofState 
-         FROM State__c GROUP BY Country_Name__c];
-        for (State__c st : stateList) {
-            for(aggregateResult agr:aggregateOnState){
-                if (st.Country_Name__c == agr.get('Country_Name__c')) {
-                    mapCountryState.put(String.valueof(agr.get('Country_Name__c')),
-                    new Country__c(Id=String.valueof(agr.get('Country_Name__c')),Total_Number_Of_States__c=Integer.valueof(agr.get('NumofState'))));                    
-                }
-            }
-        }
-        if(!mapCountryState.isEmpty()){
-            // updating country record
-            update mapCountryState.Values();
-            CountryJosnGenerator(countryList);
-        }
-    }
+
        /*
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
     * @Description      This method is used  to fill global map.
