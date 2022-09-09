@@ -29,9 +29,10 @@ public with sharing class stateTriggerHelper {
                                         Total_Number_Of_States__c = (Decimal)agr.get('totalNumberOfState'),
                                         Total_Number_Of_Districts__c = (Decimal)agr.get('totalNumberOfDistricts'))); 
             }
+			// updating map values
+			update mapOfCountryToBeUpdate.Values();
         }
-        // updating map values
-        update mapOfCountryToBeUpdate.Values();
+        
     }
     /*
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐

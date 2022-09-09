@@ -27,8 +27,9 @@ public with sharing class districtTriggerHelper {
                                         IN:mapOfStateToBeUpdate.keySet() GROUP BY State_Name__c]){
                 mapOfStateToBeUpdate.get((Id)agr.get('State_Name__c')).Total_Number_Of_Districts__c=(Integer)agr.get('numberOfDistrict');
                                         }
+			// updating map values.
+			update mapOfStateToBeUpdate.Values();
         }
-        // updating map values.
-        update mapOfStateToBeUpdate.Values();
+        
     }
 }
