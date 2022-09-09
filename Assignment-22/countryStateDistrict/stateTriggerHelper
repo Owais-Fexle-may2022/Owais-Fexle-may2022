@@ -38,7 +38,7 @@ public with sharing class stateTriggerHelper {
     * @Description      This Method is used to generate json data on state object.
     * @author           Mohd Owais  <mohd.owais@fexle.com>
     * @Return           void
-    * @Parameter        List of Country id
+    * @Parameter        List,Map
     * @created          2022-08-15
     * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */

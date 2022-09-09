@@ -4,7 +4,7 @@ public with sharing class districtTriggerHelper {
     * @Description      This method is used when an district is inserted deleted or updated it updates total no of district on state object.
     * @author           Mohd Owais  <mohd.owais@fexle.com>
     * @Return           void
-    * @Parameter        List of district
+    * @Parameter        List,Map
     * @created          2022-08-13
     * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
