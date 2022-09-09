@@ -3,7 +3,8 @@ public with sharing class countryHelper {
 
         Set<Id> CountryId = new Set<Id>();
         for(Country__c count : newCountryList){
-            if(oldCountryMap != null){   
+            if(oldCountryMap != null && ((count.Total_Number_Of_States__c !=oldCountryMap.get(count.Id).Total_Number_Of_States__c )
+									 ||(count.Total_Number_Of_Districts__c !=oldCountryMap.get(count.Id).Total_Number_Of_Districts__c))){   
                 CountryId.add(count.Id);             
             }
             system.debug('idscountry'+CountryId);
@@ -11,10 +12,10 @@ public with sharing class countryHelper {
         if(!CountryId.isEmpty()){
 
             Map<Id,State__c> mapOfStatewithCountryId = new Map<Id,State__c>([SELECT Id, Country_Name__c,Country_Name__r.Id,Country_Name__r.Name,
-                                                                        Country_Name__r.Country_Code__c,Country_Name__r.Total_Number_Of_States__c,
-                                                                         Country_Name__r.Total_Number_Of_Districts__c, Name,Total_Number_Of_Districts__c,
-                                                                            (SELECT id, Name FROM Districts__r)
-                                                                            FROM State__c WHERE Country_Name__c IN : CountryId]);
+                                                                           Country_Name__r.Country_Code__c,Country_Name__r.Total_Number_Of_States__c,
+                                                                           Country_Name__r.Total_Number_Of_Districts__c, Name,Total_Number_Of_Districts__c,
+                                                                           (SELECT id, Name FROM Districts__r)
+                                                                           FROM State__c WHERE Country_Name__c IN : CountryId]);
             System.debug(mapOfStatewithCountryId.values());
 
             for(Country__c cou : newCountryList){

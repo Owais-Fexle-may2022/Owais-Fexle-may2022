@@ -14,11 +14,11 @@ public with sharing class countryTriggerHelper {
         // iterating new List
         for(Country__c count : newCountryList){
             // check for changes
-            if(oldCountryMap != null && (count.Total_Number_Of_States__c !=oldCountryMap.get(count.Id).Total_Number_Of_States__c )
-               ||(count.Total_Number_Of_Districts__c !=oldCountryMap.get(count.Id).Total_Number_Of_Districts__c)){
+            if(oldCountryMap != null && ((count.Total_Number_Of_States__c !=oldCountryMap.get(count.Id).Total_Number_Of_States__c )
+									 ||(count.Total_Number_Of_Districts__c !=oldCountryMap.get(count.Id).Total_Number_Of_Districts__c))){
                 // adding country Id to set   
                 setOfCountryId.add(count.Id);             
-            	}
+            }
         }
         // check size of set where country Id stores
         if(!setOfCountryId.isEmpty()){

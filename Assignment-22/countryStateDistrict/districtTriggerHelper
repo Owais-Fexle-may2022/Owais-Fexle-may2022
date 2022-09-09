@@ -8,7 +8,7 @@ public with sharing class districtTriggerHelper {
     * @created          2022-08-13
     * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static void insertUpdateDeleteDistrict(List<District__c> newDistrict,Map<Id,District__c> oldDistrictMap){
+    public static void  rollUpDistrictCountOnState(List<District__c> newDistrict,Map<Id,District__c> oldDistrictMap){
         // initilizing map to store district parent and id.
         Map<Id,State__c> mapOfStateToBeUpdate=new Map<Id,State__c>();
         // iterating district list.And putting values in map.

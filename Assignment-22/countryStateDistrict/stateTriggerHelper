@@ -8,7 +8,7 @@ public with sharing class stateTriggerHelper {
     * @created          2022-08-13
     * ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */  
-    public static void insertUpdateDeleteState(List<State__c> newState,Map<Id,State__c> oldStateMap) {
+    public static void rollUpStateAndDistrictCountOnCountry(List<State__c> newState,Map<Id,State__c> oldStateMap) {
         // initilizing map to store state parent and id.
         Map<Id,Country__c> mapOfCountryToBeUpdate=new Map<Id,Country__c>();
          // iterating state list.And putting values in map.
@@ -51,7 +51,9 @@ public with sharing class stateTriggerHelper {
             }
         }
         if(!stateIds.isEmpty()){
-            Map<Id, State__c> mapOfState = new Map<Id, State__c>([SELECT Id, Name, Total_Number_Of_Districts__c, (SELECT Id, Name FROM Districts__r) FROM State__c]);
+            Map<Id, State__c> mapOfState = new Map<Id, State__c>([SELECT Id, Name, Total_Number_Of_Districts__c,
+																			(SELECT Id, Name FROM Districts__r)
+																								FROM State__c]);
             for(State__c st: newStateList){
                 if(mapOfState.containsKey(st.Id)){ 
                     State wrap = new State();
