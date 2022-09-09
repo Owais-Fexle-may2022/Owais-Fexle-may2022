@@ -1,11 +1,19 @@
+<!-- /*
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* @Description      This template is used to show render multiple template
+* @author           Mohd Owais  <mohd.owais@fexle.com>
+* ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/   -->
 <template>
     <lightning-card title="RenderMultipleTemplate" icon-name="standard:formula">
         <div class="slds-var-m-around_medium">
             <p class="slds-var-m-button_small">
+                <!-- creating button -->
             <lightning-button variant="brand" label="Click Me 1" title="clickMeForOne" onclick={handleClickMe1} class="slds-m-left_x-small"></lightning-button>
             <lightning-button variant="brand" label="Click Me 2" title="clickMeForTwo" onclick={handleClickMe2} class="slds-m-left_x-small"></lightning-button>
             <lightning-button variant="brand" label="Click Me 3" title="clickmeForThree" onclick={handleClickMe3} class="slds-m-left_x-small"></lightning-button>
             </p>
+            <!-- if condition true then show's message which  comes from Javascript file -->
             <template if:true={message1}>
                 <p>{message1}</p>
             </template>
